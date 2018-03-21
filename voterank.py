@@ -11,16 +11,11 @@ with open('ca-CondMat.txt') as inputfile:
 	for line in inputfile:
 		nodes = line.strip().split()
 		nodes.sort()
-		int_nodes = []
 		for node in nodes:
-			nodes_set.add(int(node))
-			int_nodes.append(int(node))
-		edges_set.add(tuple(int_nodes))
+			nodes_set.add(node)
+		edges_set.add(tuple(nodes))
 num_nodes = len(nodes_set) 	#23133
 num_edges = len(edges_set)	#93497
-
-nodes_list = list(nodes_set)
-nodes_list.sort()
 
 neighbors_dict = defaultdict(set)
 for (node_0, node_1) in edges_set:
@@ -45,19 +40,21 @@ def vote_and_elect(node_voting_info):
 		if num_votes_received > max_votes:
 			max_votes = num_votes_received
 			node_with_max_votes = node
-		node_voting_info[node] = num_votes_received
+		node_voting_info[node] = (num_votes_received, node_voting_info[node][1])
 	return node_with_max_votes
 
 def update_voting_ability(elected_node, neighbors_dict, node_voting_info, average_degree):
 	for neighbor in neighbors_dict[elected_node]:
 		new_voting_ability = node_voting_info[neighbor][1] - 1/average_degree
-		node_voting_info[neighbor][1] = new_voting_ability if new_voting_ability >= 0 else 0
+		if new_voting_ability >= 0:
+			node_voting_info[neighbor] = (node_voting_info[neighbor][0], new_voting_ability)
+		else:
+			node_voting_info[neighbor] = (node_voting_info[neighbor][0], 0)
 
 # initialize the algorithm
 node_voting_info = {}
-for node in nodes_list:
+for node in nodes_set:
 	node_voting_info[node] = (0, 1) # (number of votes received, voting power)
-# print(node_voting_info)
 while (len(elected_spreaders) < num_initial_spreaders):
 	elected_node = vote_and_elect(node_voting_info)
 	print(elected_node)
