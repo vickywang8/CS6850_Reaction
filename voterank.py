@@ -1,4 +1,5 @@
 from collections import defaultdict
+import random
 
 nodes_set = set()
 edges_set = set()
@@ -6,6 +7,7 @@ node_neighbors_dict = {}
 
 num_initial_spreaders = 20
 elected_spreaders = []
+longest_shortest_path = 14
 
 with open('ca-CondMat.txt') as inputfile:
 	for line in inputfile:
@@ -61,3 +63,36 @@ while (len(elected_spreaders) < num_initial_spreaders):
 	elected_spreaders.append(elected_node)
 	update_voting_ability(elected_node, neighbors_dict, node_voting_info, average_degree)
 print(elected_spreaders)
+
+###################################
+
+def infection(neighbors_dict, elected_spreaders, infected_bound = num_nodes*0.5, infection_rate = 0.5):
+	infected_set = set(elected_spreaders)
+	newly_infected_set = set()
+	t = 0
+	while len(infected_set) < infected_bound: 
+		for infected_node in infected_set:
+			neighbor = random.choice(list(neighbors_dict[infected_node]))
+			if random.uniform(0,1) <= infection_rate:
+				newly_infected_set.add(neighbor)
+		t+=1
+		infected_set = infected_set.union(newly_infected_set)
+	return t
+
+# run infection
+avg = 0
+for i in range(0,100):
+	avg+=infection(neighbors_dict, elected_spreaders)
+print(avg/100)
+
+
+
+
+
+
+
+
+
+
+
+
