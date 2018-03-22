@@ -5,7 +5,7 @@ nodes_set = set()
 edges_set = set()
 node_neighbors_dict = {}
 
-num_initial_spreaders = 20
+num_initial_spreaders = 50
 elected_spreaders = []
 longest_shortest_path = 14
 
@@ -59,14 +59,14 @@ for node in nodes_set:
 	node_voting_info[node] = (0, 1) # (number of votes received, voting power)
 while (len(elected_spreaders) < num_initial_spreaders):
 	elected_node = vote_and_elect(node_voting_info)
-	print(elected_node)
+	# print(elected_node)
 	elected_spreaders.append(elected_node)
 	update_voting_ability(elected_node, neighbors_dict, node_voting_info, average_degree)
-print(elected_spreaders)
+# print(elected_spreaders)
 
 ###################################
 
-def infection(neighbors_dict, elected_spreaders, infected_bound = num_nodes*0.5, infection_rate = 0.5):
+def infection(neighbors_dict, elected_spreaders, infected_bound = num_nodes*0.8, infection_rate = 0.5):
 	infected_set = set(elected_spreaders)
 	newly_infected_set = set()
 	t = 0
@@ -83,7 +83,7 @@ def infection(neighbors_dict, elected_spreaders, infected_bound = num_nodes*0.5,
 avg = 0
 for i in range(0,100):
 	avg+=infection(neighbors_dict, elected_spreaders)
-print(avg/100)
+print("Average # of time steps until convergence: " + str(avg/100))
 
 
 
