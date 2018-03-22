@@ -5,8 +5,8 @@ nodes_set = set()
 edges_set = set()
 node_neighbors_dict = {}
 
-num_initial_spreaders = 50
-elected_spreaders = []
+num_initial_spreaders = 20
+elected_spreaders = set()
 longest_shortest_path = 14
 
 with open('ca-CondMat.txt') as inputfile:
@@ -60,13 +60,14 @@ for node in nodes_set:
 while (len(elected_spreaders) < num_initial_spreaders):
 	elected_node = vote_and_elect(node_voting_info)
 	# print(elected_node)
-	elected_spreaders.append(elected_node)
+	elected_spreaders.add(elected_node)
+	node_voting_info[elected_node] = (0, 0)
 	update_voting_ability(elected_node, neighbors_dict, node_voting_info, average_degree)
-# print(elected_spreaders)
+print(elected_spreaders)
 
 ###################################
 
-def infection(neighbors_dict, elected_spreaders, infected_bound = num_nodes*0.8, infection_rate = 0.5):
+def infection(neighbors_dict, elected_spreaders, infected_bound = num_nodes*0.5, infection_rate = 0.5):
 	infected_set = set(elected_spreaders)
 	newly_infected_set = set()
 	t = 0
