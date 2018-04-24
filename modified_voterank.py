@@ -6,12 +6,12 @@ nodes_set = set()
 edges_set = set()
 node_neighbors_dict = {}
 
-num_initial_spreaders = 2
+num_initial_spreaders = 20
 elected_spreaders = set()
 longest_shortest_path = 14
 entropy_parameter = .5
 
-with open('simulated.txt') as inputfile:
+with open('ca-CondMat.txt') as inputfile:
 	for line in inputfile:
 		nodes = line.strip().split()
 		nodes.sort()
@@ -25,7 +25,6 @@ neighbors_dict = defaultdict(set)
 for (node_0, node_1) in edges_set:
 	neighbors_dict[node_0].add(node_1)
 	neighbors_dict[node_1].add(node_0)
-print(neighbors_dict)
 # average degree of network
 average_degree = 0
 for node, neighbors in neighbors_dict.items():
@@ -38,6 +37,8 @@ def get_pj(node, target_node, neighbors_dict):
 
 def get_entropy(target_node, neighbors_dict):
 	numerator = sum([-get_pj(neighbor, target_node, neighbors_dict)*math.log(get_pj(neighbor, target_node, neighbors_dict)) for neighbor in neighbors_dict[target_node]])
+	if numerator == 0:
+		return 0
 	denominator = math.log(len(neighbors_dict[target_node]))
 	if denominator == 0:
 		denominator = 1
@@ -88,7 +89,7 @@ print(elected_spreaders)
 
 ###################################
 
-def infection(neighbors_dict, elected_spreaders, infected_bound = num_nodes*0.5, infection_rate = 0.3):
+def infection(neighbors_dict, elected_spreaders, infected_bound = num_nodes*0.5, infection_rate = 0.5):
 	infected_set = set(elected_spreaders)
 	newly_infected_set = set()
 	t = 0
