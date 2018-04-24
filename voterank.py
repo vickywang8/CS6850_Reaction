@@ -67,7 +67,7 @@ print(elected_spreaders)
 
 ###################################
 
-def infection(neighbors_dict, elected_spreaders, infected_bound = num_nodes*0.5, infection_rate = 0.5):
+def infection(neighbors_dict, elected_spreaders, infected_bound = num_nodes*0.5, infection_rate = 0.3):
 	infected_set = set(elected_spreaders)
 	newly_infected_set = set()
 	t = 0
