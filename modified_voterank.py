@@ -6,12 +6,12 @@ nodes_set = set()
 edges_set = set()
 node_neighbors_dict = {}
 
-num_initial_spreaders = 20
+num_initial_spreaders = 2
 elected_spreaders = set()
 longest_shortest_path = 14
 entropy_parameter = .5
 
-with open('ca-CondMat.txt') as inputfile:
+with open('simulated.txt') as inputfile:
 	for line in inputfile:
 		nodes = line.strip().split()
 		nodes.sort()
@@ -37,11 +37,9 @@ def get_pj(node, target_node, neighbors_dict):
 
 def get_entropy(target_node, neighbors_dict):
 	numerator = sum([-get_pj(neighbor, target_node, neighbors_dict)*math.log(get_pj(neighbor, target_node, neighbors_dict)) for neighbor in neighbors_dict[target_node]])
-	if numerator == 0:
-		return 0
 	denominator = math.log(len(neighbors_dict[target_node]))
 	if denominator == 0:
-		denominator = 1
+		return 0
 	#print(target_node)
 	#print(numerator/denominator)
 	return numerator/denominator
