@@ -1,3 +1,10 @@
+"""
+entropy_parameter: corresponds to the alpha parameter, only needs to be updated if we are doing testing that involves alpha
+in vote_and_elect, change the True in votes_with_entropy to False if doing tests that involve alpha
+in the infection function, change infected_bound and infection_rate accordingly
+change num_initial_spreaders
+"""
+
 from collections import defaultdict
 import random
 import math
@@ -103,7 +110,7 @@ def infection(neighbors_dict, elected_spreaders, infected_bound = num_nodes*0.5,
 	infected_set = set(elected_spreaders)
 	newly_infected_set = set()
 	t = 0
-	while len(infected_set) < infected_bound: 
+	while len(infected_set) < infected_bound:
 		for infected_node in infected_set:
 			neighbor = random.choice(list(neighbors_dict[infected_node]))
 			if random.uniform(0,1) <= infection_rate:
