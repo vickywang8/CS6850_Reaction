@@ -5,11 +5,11 @@ nodes_set = set()
 edges_set = set()
 node_neighbors_dict = {}
 
-num_initial_spreaders = 2
+num_initial_spreaders = 1
 elected_spreaders = set()
 longest_shortest_path = 14
 
-with open('simulated.txt') as inputfile:
+with open('ca-CondMat.txt') as inputfile:
 	for line in inputfile:
 		nodes = line.strip().split()
 		nodes.sort()
@@ -67,11 +67,11 @@ print(elected_spreaders)
 
 ###################################
 
-def infection(neighbors_dict, elected_spreaders, infected_bound = num_nodes*0.5, infection_rate = 0.3):
+def infection(neighbors_dict, elected_spreaders, infected_bound = num_nodes*0.5, infection_rate = 0.5):
 	infected_set = set(elected_spreaders)
 	newly_infected_set = set()
 	t = 0
-	while len(infected_set) < infected_bound: 
+	while len(infected_set) < infected_bound:
 		for infected_node in infected_set:
 			neighbor = random.choice(list(neighbors_dict[infected_node]))
 			if random.uniform(0,1) <= infection_rate:

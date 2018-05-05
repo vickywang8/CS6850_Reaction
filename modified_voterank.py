@@ -13,12 +13,12 @@ nodes_set = set()
 edges_set = set()
 node_neighbors_dict = {}
 
-num_initial_spreaders = 2
+num_initial_spreaders = 200
 elected_spreaders = set()
 longest_shortest_path = 14
 entropy_parameter = .5
 
-with open('simulated.txt') as inputfile:
+with open('ca-CondMat.txt') as inputfile:
 	for line in inputfile:
 		nodes = line.strip().split()
 		nodes.sort()
